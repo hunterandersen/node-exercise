@@ -2,8 +2,6 @@ import express from "express";
 import db from "../mockdb";
 import employees from "../controllers/employees.controller";
 
-console.log("Employees Object", employees);
-
 const router = express.Router();
 
 router.get("/:id?", async (req, res, next) => {
@@ -13,7 +11,7 @@ router.get("/:id?", async (req, res, next) => {
         let data;
         //If we were given some id to work with
         if (id) {
-            data = await db.getOne(id);
+            data = await employees.getOne(id);
             //We don't want to have to
             //write SQL commands here
         } else {
@@ -29,7 +27,7 @@ router.get("/:id?", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
     try {
         const newUser = req.body;
-        const data = await db.add(newUser);
+        const data = await employees.add(newUser);
         res.json(data);
     } catch (err) {
         next(err);
@@ -40,7 +38,7 @@ router.put("/:id?", async (req, res, next) => {
     try {
         const { id } = req.params;
         const updatedUser = req.body;
-        const data = await db.update(id, updatedUser);
+        const data = await employees.update(id, updatedUser);
         res.json(data);
     } catch (err) {
         next(err);
@@ -50,7 +48,7 @@ router.put("/:id?", async (req, res, next) => {
 router.delete("/:id?", async (req, res, next) => {
     try {
         const { id } = req.params;
-        const data = await db.remove(id);
+        const data = await employees.remove(id);
         res.json(data);
     } catch (err) {
         next(err);

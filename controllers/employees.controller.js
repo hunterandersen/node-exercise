@@ -1,15 +1,34 @@
-import connection from "../db";
+import query from "../db";
 
-function getAll(){
-    return new Promise((resolve, reject) => {
-        //This is where we actually use SQL to talk to the database
-        connection.query(`SELECT * FROM employees`, (err, results) => {
-            if (err) reject(err);
-            resolve(results);
-        });
-    });
+//Read
+async function getAll() {
+  return await query(`SELECT * FROM employees`);
+}
+
+//Read
+async function getOne(id){
+    return await query(`SELECT * FROM employees WHERE EmployeeID = ?`, [id]);
+}
+
+//Create, AKA insert
+async function add(employee){
+    return await query(`INSERT INTO employees SET ?`, employee);
+}
+
+//Update
+async function update(id, data){
+    return await query(`UPDATE employees SET ? WHERE EmployeeID = ?`, [data, id]);
+}
+
+//Delete
+async function remove(id){
+    return await query(`DELETE FROM employees WHERE EmployeeID = ?`, id);
 }
 
 export default {
-    getAll
-}
+  getAll,
+  getOne,
+  add,
+  update,
+  remove
+};
